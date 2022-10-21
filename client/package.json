@@ -1,0 +1,84 @@
+{
+  "name": "mots-croises",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "build-font": "fantasticon public/icon -o public/font/"
+  },
+  "dependencies": {
+    "@creativebulma/bulma-divider": "^1.1.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/vue-fontawesome": "^2.0.6",
+    "axios": "^0.21.4",
+    "buefy": "^0.9.10",
+    "core-js": "^3.6.5",
+    "dom-to-image": "^2.6.0",
+    "vue": "^2.6.11",
+    "vue-fontawesome": "0.0.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "^4.5.12",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/eslint-config-airbnb": "^5.0.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "fantasticon": "^1.2.2",
+    "node-sass": "^7.0.1",
+    "sass-loader": "^12.4.0",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended",
+      "@vue/airbnb"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "no-mixed-operators": 0,
+      "no-param-reassign": 0,
+      "no-plusplus": 0,
+      "no-shadow": 0,
+      "no-useless-constructor": 0,
+      "no-empty-function": 0,
+      "no-unused-vars": 0,
+      "max-len": 0,
+      "space-before-blocks" : 0,
+      "space-infix-ops": 0,
+      "comma-dangle": 0,
+      "semi": 0,
+      "no-multi-spaces": 0,
+      "padded-blocks": 0,
+      "indent": 0,
+      "space-in-parens": 0,
+      "quotes": 0,
+      "operator-linebreak": 0,
+      "object-curly-spacing": 0,
+      "no-trailing-spaces": 0,
+      "implicit-arrow-linebreak": 0,
+      "arrow-parens": 0,
+      "function-paren-newline": 0,
+      "arrow-body-style": 0,
+      "no-nested-ternary": 0
+      
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
