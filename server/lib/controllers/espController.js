@@ -1,6 +1,7 @@
 import { body, validationResult } from "express-validator";
 
 let angle = 0;
+let touched = -1;
 export default function espController({ app }) {
   app.get("/echo/:word", async (req, res) => {
     res.send(req.params.word);
@@ -8,7 +9,18 @@ export default function espController({ app }) {
 
   app.get("/angle", async (req, res) => {
     res.send(200, angle);
-    angle = (angle + 1) % 360;
+  });
+  app.post("/angle", async (req, res) => {
+    angle = req.body.angle;
+    res.send(200);
+  });
+
+  app.get("/touched", async (req, res) => {
+    res.send(200, touched);
+  });
+  app.post("/touched", async (req, res) => {
+    touched = req.body.touched;
+    res.send(200);
   });
   /* app.get("/dico-length", async (req, res) => {
      res.send(
