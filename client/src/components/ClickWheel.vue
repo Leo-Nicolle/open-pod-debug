@@ -4,10 +4,13 @@
     <div class="container">
       <canvas ref="canvas"></canvas>
       <div class ="info">
-      <p>touched: <strong>{{ touched }}</strong></p>
-      <p>angle: <strong>{{ angle }}</strong></p>
-      <p>lines: <strong>{{ lines }}</strong></p>
-      <p>resolution: <strong>{{ lines * 2 }}</strong></p>
+        <p>touched: <strong>{{ touched }}</strong></p>
+        <p>angle: <strong>{{ angle }}</strong></p>
+        <p>cumulated: <strong>{{ cumulatedDelta }}</strong></p>
+
+        <p>lines: <strong>{{ lines }}</strong></p>
+        <p>delta: <strong>{{ delta }}</strong></p>
+        <p>resolution: <strong>{{ lines * 2 }}</strong></p>
       </div>
     </div>
   </div>
@@ -24,8 +27,11 @@ export default {
       message: '',
       width: 128,
       height: 128,
-      lines: 16,
+      lines: 64,
       angle: 0,
+      lastAngle: 0,
+      cumulatedDelta: 0,
+      delta: 0,
       touched: -1,
     };
   },
@@ -36,11 +42,21 @@ export default {
       return axios
         .get(this.getUrl('angle'))
         .then(({ data }) => {
+          const minDelta = 360 / this.lines / 2;
+          const delta = this.lastAngle - data;
           this.angle = data;
+          if (Math.abs(delta) < minDelta ) return this.angle;
+          this.delta = delta;
+          this.lastAngle = this.angle;
+          this.$emit('delta', Math.sign(delta));
+          this.cumulatedDelta +=Math.sign(delta);
           return this.angle;
         })
         .then(() => axios.get(this.getUrl('touched')))
         .then(({ data }) => {
+          if (this.touched !== data) {
+            this.$emit('touched', data);
+          }
           this.touched = data;
           return this.touched;
         });

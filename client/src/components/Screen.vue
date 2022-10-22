@@ -1,7 +1,18 @@
 <template>
   <div>
     <h3>Screen</h3>
-    <canvas ref="canvas"></canvas>
+    <div class="container">
+      <canvas ref="canvas"></canvas>
+      <div class="info">
+        <p>
+          line: <strong>{{ line }}</strong>
+        </p>
+        <p>
+          currSub: <strong>{{ currSub }}</strong>
+        </p>
+
+      </div>
+    </div>
   </div>
 </template>
 
@@ -16,9 +27,23 @@ export default {
       screenW: 128,
       screenH: 160,
       line: 0,
+      subdivision: 5,
+      currSub: 0,
       maxLines: 15,
       scale: 1.5,
     };
+  },
+  watch: {
+    // scroll(n, o) {
+    //   if (n < 0) {
+    //     this.currSub = (-Math.abs(n) % this.subdivision) + this.subdivision;
+    //   } else {
+    //     this.currSub = n % this.subdivision;
+    //   }
+    //   if (this.currSub === 0) {
+    //     this.line += Math.sign(o - n);
+    //   }
+    // },
   },
   computed: {
     width() {
@@ -30,6 +55,16 @@ export default {
   },
   mixins: [apiMixin],
   methods: {
+    scroll(d) {
+      this.currSub += d;
+      if (this.currSub < 0) {
+        this.line++;
+        this.currSub = this.subdivision - 1;
+      } else if (this.currSub > this.subdivision) {
+        this.currSub = 0;
+        this.line--;
+      }
+    },
     fetch() {
       return Promise.resolve();
       // return axios
@@ -47,7 +82,7 @@ export default {
       ctx.save();
       ctx.scale(this.scale, this.scale);
       ctx.beginPath();
-      const fontSize = 9;
+      const fontSize = 12;
       const margin = 2;
       ctx.fillStyle = '#fff';
       ctx.fillRect(0, 0, w, h);
@@ -56,13 +91,19 @@ export default {
       ctx.font = `${fontSize}px "LogisosoMedium"`;
       ctx.font = `${fontSize}px "FreeUniversalRegular"`;
       ctx.font = `${fontSize}px "profont"`;
+      ctx.save();
+      ctx.fillStyle = '#bFb';
+      ctx.fillRect(0, (h - fontSize) / 2, w, fontSize);
+      ctx.restore();
 
       ctx.fillStyle = '#000';
-      bands.slice(this.line, this.line + this.maxLines)
-        .forEach((text, i) => {
-          ctx.strokeText(text, 0, i * (fontSize + margin));
-          ctx.fillText(text, 0, i * (fontSize + margin));
-        });
+      for (let i = 0; i < this.maxLines; i++) {
+        const text = bands[(i + this.line) % bands.length];
+        const offsetY = Math.floor(fontSize / this.subdivision * this.currSub);
+        const y = i * (fontSize + margin) + offsetY;
+        ctx.strokeText(text, 0, y);
+        ctx.fillText(text, 0, y);
+      }
       ctx.restore();
     },
     animate() {
@@ -84,8 +125,7 @@ export default {
 </script>
 
 <style>
-
-canvas{
+canvas {
   border: 1px dashed #ddd;
 }
 </style>

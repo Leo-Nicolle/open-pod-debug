@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <ClickWheel />
-    <Screen />
+    <ClickWheel @touched="(t) => touched = t" @delta="(d) => onDelta(d)"/>
+    <Screen ref="screen" :touched="touched" />
   </div>
 </template>
 
@@ -15,13 +15,21 @@ export default {
   name: 'App',
   mixins: [apiMixin],
   data() {
-    return {};
+    return {
+      scroll: 0,
+      touched: -1
+    };
   },
+  
   components: {
     ClickWheel,
     Screen,
   },
   methods: {
+    onDelta(d){
+      this.scroll+=d;
+      this.$refs.screen.scroll(d);
+    }
   },
 
 };
@@ -39,12 +47,12 @@ export default {
 strong {
   color:#fff;
 }
-h2 { 
+h2 {
   font-size: 2em;
   margin-top: 1em;
 }
 
-h3 { 
+h3 {
   font-size: 1.2em;
   margin-top: 1em;
 }
