@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import apiMixin from '../js/api';
 import bands from '../js/bands';
 
@@ -17,6 +16,7 @@ export default {
       screenW: 128,
       screenH: 160,
       line: 0,
+      maxLines: 15,
       scale: 1.5,
     };
   },
@@ -31,22 +31,38 @@ export default {
   mixins: [apiMixin],
   methods: {
     fetch() {
-      return axios
-        .get(this.getUrl('angle'))
-        .then(({ data }) => {
-          // this.angle = data;
-          // return this.angle;
-        });
+      return Promise.resolve();
+      // return axios
+      //   .get(this.getUrl('angle'))
+      //   .then(({ data }) => {
+      //     // this.angle = data;
+      //     // return this.angle;
+      //   });
       // .then(() => axios.post(this.getUrl('angle'), {angle: this.angle + 1}))
     },
     draw() {
       const ctx = this.$refs.canvas.getContext('2d');
+      const w = this.screenW;
+      const h = this.screenH;
       ctx.save();
       ctx.scale(this.scale, this.scale);
       ctx.beginPath();
-      ctx.arc(this.screenW / 2, this.screenH / 2, this.screenW / 2, 0, Math.PI * 2);
-      ctx.fillStyle = '#9d9';
-      ctx.fill();
+      const fontSize = 9;
+      const margin = 2;
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(0, 0, w, h);
+      ctx.textBaseline = 'top';
+      // ctx.font = `bold ${fontSize} Roboto`;
+      ctx.font = `${fontSize}px "LogisosoMedium"`;
+      ctx.font = `${fontSize}px "FreeUniversalRegular"`;
+      ctx.font = `${fontSize}px "profont"`;
+
+      ctx.fillStyle = '#000';
+      bands.slice(this.line, this.line + this.maxLines)
+        .forEach((text, i) => {
+          ctx.strokeText(text, 0, i * (fontSize + margin));
+          ctx.fillText(text, 0, i * (fontSize + margin));
+        });
       ctx.restore();
     },
     animate() {

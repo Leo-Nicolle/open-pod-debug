@@ -102,3 +102,9 @@ aside,
 		font-size: 18px;
 	}
 }
+
+@font-face {
+  font-family: "profont";
+  src: local("profont"),
+   url(./fonts/profont.ttf) format("truetype");
+}
